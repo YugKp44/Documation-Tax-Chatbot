@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Documentation: GST & Income Tax Chatbot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- 1. Global Settings & Variables --- */
+        :root {
+            --sidebar-width: 280px;
+            --primary-color: #3B82F6;
+            --heading-color: #111827;
+            --text-color: #374151;
+            --bg-light: #F9FAFB;
+            --border-color: #E5E7EB;
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            line-height: 1.6;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+            display: flex;
+        }
+
+        /* --- 2. Sidebar & Navigation --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            background-color: #fff;
+            border-right: 1px solid var(--border-color);
+            padding: 25px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        .sidebar-header {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--heading-color);
+            margin: 0 0 20px 0;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-nav li a {
+            display: block;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 0.95em;
+            padding: 10px 15px;
+            border-radius: 6px;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .sidebar-nav li a:hover,
+        .sidebar-nav li a.active {
+            background-color: var(--bg-light);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        /* --- 3. Mobile Menu Elements --- */
+        .menu-toggle,
+        .close-btn {
+            display: none;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        .menu-toggle {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1001;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+        }
+
+        .menu-toggle .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: var(--heading-color);
+            margin: 5px 0;
+        }
+
+        .close-btn {
+            font-size: 2em;
+            font-weight: 300;
+            color: var(--text-color);
+        }
+
+        /* --- 4. Main Content Area --- */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        section {
+            padding-top: 60px;
+            margin-top: -40px;
+        }
+
+        /* --- 5. Component Styling --- */
+        .cover-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100vh;
+            background-color: #0c0a18;
+            background-image:
+                radial-gradient(at 27% 37%, hsla(215, 98%, 61%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 97% 21%, hsla(125, 98%, 72%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 52% 99%, hsla(355, 98%, 71%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 10% 29%, hsla(256, 96%, 68%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 97% 96%, hsla(38, 60%, 74%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 79% 53%, hsla(343, 68%, 79%, 0.1) 0px, transparent 50%);
+        }
+
+        .cover-page h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            color: #fff;
+            border: none;
+            margin-bottom: 10px;
+        }
+
+        .cover-page h2 {
+            font-size: 1.5em;
+            color: #a7a9be;
+            margin-top: 0;
+            font-weight: 400;
+            border: none;
+        }
+
+        .cover-page .author {
+            margin-top: 40px;
+            font-size: 1.1em;
+            color: #a7a9be;
+        }
+
+        .cover-page-icon {
+            width: 56px;
+            height: 56px;
+            color: var(--primary-color);
+            margin-bottom: 24px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: var(--heading-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-top: 50px;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 1.4em;
+            font-weight: 600;
+            border-bottom: none;
+        }
+
+        strong {
+            color: var(--heading-color);
+            font-weight: 600;
+        }
+
+        code {
+            background-color: #E5E7EB;
+            color: #4B5563;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+        }
+
+        pre {
+            background-color: #1F2937;
+            color: #D1D5DB;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid #374151;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+            font-size: 0.9em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--bg-light);
+            font-weight: 600;
+            color: var(--heading-color);
+        }
+
+        #gst-data-table {
+            table-layout: fixed;
+        }
+
+        #gst-data-table th:nth-child(1) {
+            width: 25%;
+        }
+
+        #gst-data-table th:nth-child(2) {
+            width: 55%;
+        }
+
+        #gst-data-table th:nth-child(3) {
+            width: 20%;
+        }
+
+        blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding: 15px 20px;
+            margin: 25px 0;
+            background-color: var(--bg-light);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .screenshot-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .screenshot-item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .screenshot-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .screenshot-item img:hover {
+            transform: scale(1.05);
+        }
+
+        .screenshot-item p {
+            padding: 15px;
+            margin: 0;
+            font-size: 0.9em;
+            background-color: var(--bg-light);
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .notice-box {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background-color: #EFF6FF;
+            border-left: 5px solid var(--primary-color);
+            padding: 15px 20px;
+            margin: 25px 0;
+            border-radius: 8px;
+            font-size: 0.95em;
+        }
+
+        .notice-box svg {
+            width: 24px;
+            height: 24px;
+            color: var(--primary-color);
+            flex-shrink: 0;
+        }
+
+        .notice-box p {
+            margin: 0;
+        }
+
+        .notice-box a {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1002;
+            padding-top: 50px;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 80%;
+            max-height: 80%;
+            animation-name: zoom;
+            animation-duration: 0.4s;
+        }
+
+        .modal-caption {
+            margin: auto;
+            display: block;
+            width: 80%;
+            text-align: center;
+            color: #ccc;
+            padding: 10px 0;
+            animation-name: zoom;
+            animation-duration: 0.4s;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .modal-close:hover,
+        .modal-close:focus {
+            color: #bbb;
+            text-decoration: none;
+        }
+
+        @keyframes zoom {
+            from {
+                transform: scale(0.8)
+            }
+
+            to {
+                transform: scale(1)
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                border-right: none;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .menu-toggle,
+            .close-btn {
+                display: block;
+            }
+
+            .cover-page h1 {
+                font-size: 2.5em;
+            }
+
+            .cover-page h2 {
+                font-size: 1.2em;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            th,
+            td {
+                word-break: break-word;
+            }
+
+            pre {
+                white-space: pre-wrap;
+                word-break: break-word;
+            }
+        }
+
+        @media print {
+            body {
+                display: block;
+            }
+
+            .sidebar,
+            .menu-toggle,
+            .modal {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .cover-page {
+                height: 95vh;
+            }
+
+            section {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button class="menu-toggle" aria-label="Open Menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </button>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <span>Table of Contents</span>
+            <button class="close-btn" aria-label="Close Menu">&times;</button>
+        </div>
+        <nav class="sidebar-nav">
+            <ul>
+                <li><a href="#cover-page" class="active">Cover Page</a></li>
+                <li><a href="#overview">1. Project Overview</a></li>
+                <li><a href="#architecture">2. System Architecture</a></li>
+                <li><a href="#run">3. How to Run</a></li>
+                <li><a href="#datasources">4. Data Sources</a></li>
+                <li><a href="#techstack">5. Technology Stack</a></li>
+                <li><a href="#structure">6. Project Structure</a></li>
+                <li><a href="#samples">7. Sample Interactions</a></li>
+                <li><a href="#screenshots">8. Appendix: Screenshots</a></li>
+                <li><a href="#repository">9. GitHub &amp; README</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <section id="cover-page" class="cover-page">
+            <svg class="cover-page-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.17 48.17 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+            </svg>
+            <h1>Project Documentation</h1>
+            <h2>GST & Income Tax AI Chatbot</h2>
+            <p class="author">Author: Yug KP | Date: July 5, 2025</p>
+        </section>
+
+        <div class="container">
+            <section id="overview">
+                <h1>1. Project Overview</h1>
+                <p>This project is a <strong>semantic search + generative chatbot</strong> built to assist users with
+                    <strong>Indian GST and Income Tax</strong> questions. It leverages a Retrieval-Augmented Generation
+                    (RAG) pipeline...</p>
+            </section>
+
+            <section id="architecture">
+                <h1>2. System Architecture (RAG Pipeline)</h1>
+                <p>The chatbot uses a <strong>Retrieval-Augmented Generation (RAG)</strong> methodology...</p>
+                <h3>2.1. Offline Phase: Indexing the Knowledge Base</h3>
+                <ol>
+                    <li><strong>Data Conversion (<code>data/converter.py</code>):</strong> Raw PDF documents are
+                        processed...</li>
+                    <li><strong>Embedding & Indexing (<code>ingest.py</code>):</strong> The text is converted into
+                        numerical vectors...</li>
+                </ol>
+                <h3>2.2. Online Phase: Answering a User Query</h3>
+                <ol>
+                    <li><strong>User Input (<code>app.py</code>):</strong> The Flask application receives the user's
+                        question.</li>
+                    <li><strong>Information Retrieval (<code>retrieve.py</code>):</strong> The system finds the most
+                        semantically similar information...</li>
+                    <li><strong>Answer Generation (<code>model.py</code>):</strong> A language model generates a
+                        coherent answer...</li>
+                    <li><strong>Response to User (<code>app.py</code>):</strong> The answer is sent back...</li>
+                </ol>
+            </section>
+
+            <section id="run">
+                <h1>3. How to Run the Application</h1>
+                <p>This guide walks you through running the chatbot on your local machine.</p>
+                <h3>3.1. Prerequisites</h3>
+                <ul>
+                    <li>Python 3.10+</li>
+                    <li><code>pip</code> (Python package manager)</li>
+                </ul>
+                <h3>3.2. Step-by-Step Setup</h3>
+                <ol>
+                    <li><strong>Clone the Project</strong>
+                        <pre><code>git clone https://github.com/YugKp44/gst-tax-bot.git && cd gst-tax-bot</code></pre>
+                    </li>
+                    <li><strong>Create & Activate Virtual Environment</strong>
+                        <pre><code>python3 -m venv venv && source venv/bin/activate</code></pre>
+                    </li>
+                    <li><strong>Install Dependencies</strong>
+                        <pre><code>pip install --upgrade pip && pip install -r requirements.txt</code></pre>
+                    </li>
+                    <li><strong>Run the Flask App</strong>
+                        <pre><code>python app.py</code></pre>
+                    </li>
+                    <li><strong>Open in Browser</strong>
+                        <p>Navigate to: <code>http://127.0.0.1:5000</code></p>
+                    </li>
+                </ol>
+            </section>
+
+            <section id="datasources">
+                <h1>4. Data Sources</h1>
+                <p>The knowledge base is compiled exclusively from trusted, public-domain, and government-authorized
+                    documents.</p>
+                <h3>4.1. GST-Related Data</h3>
+                <table id="gst-data-table">
+                    <thead>
+                        <tr>
+                            <th>Source</th>
+                            <th>Description</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>CBIC GST Portal</td>
+                            <td>Official portal for all Goods and Services Tax related rules, returns procedures, and
+                                detailed FAQs. The primary source for legal text.</td>
+                            <td><a href="https://www.cbic-gst.gov.in/" target="_blank">Link</a></td>
+                        </tr>
+                        <tr>
+                            <td>FAQ on TDS under GST</td>
+                            <td>A detailed document addressing common questions specifically on Tax Deducted at Source
+                                (TDS) provisions under the GST Act.</td>
+                            <td><a href="https://cbic-gst.gov.in/pdf/faq-manual/faqs-registration-tax-deductor-tax-collector.pdf"
+                                    target="_blank">Link</a></td>
+                        </tr>
+                        <tr>
+                            <td>Advance Ruling FAQs</td>
+                            <td>Frequently asked questions concerning the process and implications of obtaining an
+                                advance tax ruling under the GST framework.</td>
+                            <td><a href="https://tutorial.gst.gov.in/userguide/advanceruling/FAQs_Advance_Ruling_for_Registered_Taxpayers.htm"
+                                    target="_blank">Link</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>4.2. Income Tax-Related Data</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Source</th>
+                            <th>Description</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Income Tax India Portal</td>
+                            <td>Official IT department portal for laws, personal and corporate tax information,
+                                deduction details, and TDS/TCS rates.</td>
+                            <td><a href="https://www.incometax.gov.in/iec/foportal/" target="_blank">Link</a></td>
+                        </tr>
+                        <tr>
+                            <td>FAQs on TDS / TCS</td>
+                            <td>A comprehensive collection of FAQs covering key provisions and compliance requirements
+                                under sections 194C, 194I, 206C, etc.</td>
+                            <td><a href="https://incometaxindia.gov.in/Pages/faqs.aspx" target="_blank">Link</a></td>
+                        </tr>
+                        <tr>
+                            <td>Section 80C Deductions</td>
+                            <td>An official list of all eligible deductions and investment types that qualify for tax
+                                benefits under Section 80C of the Income Tax Act.</td>
+                            <td><a href="https://incometaxindia.gov.in/charts%20%20tables/deductions.htm"
+                                    target="_blank">Link</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="techstack">
+                <h1>5. Technology Stack</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Technology Used</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Backend Framework</td>
+                            <td>Flask (Python)</td>
+                        </tr>
+                        <tr>
+                            <td>Search Engine</td>
+                            <td>FAISS + <code>all-MiniLM-L6-v2</code> embeddings</td>
+                        </tr>
+                        <tr>
+                            <td>Language Model</td>
+                            <td>Google <code>flan-t5-small</code> (via Transformers)</td>
+                        </tr>
+                        <tr>
+                            <td>Web Interface</td>
+                            <td>HTML/CSS/JS (Rendered by Flask)</td>
+                        </tr>
+                        <tr>
+                            <td>Packaging</td>
+                            <td>Docker</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section id="structure">
+                <h1>6. Project Structure</h1>
+                <p>The repository is organized as follows:</p>
+                <pre><code>gst-tax-bot/
+├── data/
+│   └── raw/              # Source PDF documents
+├── embeddings/           # FAISS index and metadata
+├── static/               # CSS/JS for web interface
+├── templates/            # HTML templates
+├── .gitignore
+├── app.py                # Main Flask application
+├── ingest.py             # Script to create embeddings
+├── model.py              # Answer generation logic
+├── README.md
+└── requirements.txt
+</code></pre>
+            </section>
+
+            <section id="samples">
+                <h1>7. Sample Interactions</h1>
+                <blockquote><strong>Q:</strong> If Party A bought from Party B and didn’t pay GST, should Party B still
+                    file GSTR-1?<br><br><strong>A:</strong> Yes, Party B must still file GSTR-1...</blockquote>
+                <blockquote><strong>Q:</strong> What is the current TDS rate on rent above 50,000/month for an
+                    individual?<br><br><strong>A:</strong> The TDS rate on rent exceeding ₹50,000 per month paid by an
+                    individual is 5% under Section 194-IB...</blockquote>
+                <blockquote><strong>Q (Out-of-Scope):</strong> Can you tell me about the weather in
+                    Mumbai?<br><br><strong>A:</strong> This chatbot currently supports only GST and Income Tax
+                    queries...</blockquote>
+            </section>
+
+            <section id="screenshots">
+                <h1>8. Appendix: Chatbot Screenshots</h1>
+                <p>The following are sample screenshots of the chatbot interface...</p>
+                <div class="notice-box">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                    </svg>
+                    <p><strong>Note:</strong> Click on any screenshot to view a larger, maximized version.</p>
+                </div>
+                <div class="screenshot-gallery">
+                    <div class="screenshot-item"><img class="gallery-image" src="ss1.png"
+                            alt="1. Initial Welcome Screen">
+                        <p>1. Initial Welcome Screen</p>
+                    </div>
+                    <div class="screenshot-item"><img class="gallery-image" src="ss3.png"
+                            alt="2. Asking a GST Question">
+                        <p>2. Asking a GST Question</p>
+                    </div>
+                    <div class="screenshot-item"><img class="gallery-image" src="ss2.png"
+                            alt="3. Receiving a GST Answer">
+                        <p>3. Receiving a GST Answer</p>
+                    </div>
+                    <div class="screenshot-item"><img class="gallery-image" src="ss5.png"
+                            alt="4. Asking an Income Tax Question">
+                        <p>4. Asking an Income Tax Question</p>
+                    </div>
+                    <div class="screenshot-item"><img class="gallery-image" src="ss6.png"
+                            alt="5. Receiving a TDS Answer">
+                        <p>5. Receiving a TDS Answer</p>
+                    </div>
+                    <div class="screenshot-item"><img class="gallery-image" src="ss9.png"
+                            alt="6. Out-of-Scope Question">
+                        <p>6. Out-of-Scope Question</p>
+                    </div>
+                    <div class="screenshot-item"><img class="gallery-image" src="ss0.png"
+                            alt="7. Polite Rejection Response">
+                        <p>7. Polite Rejection Response</p>
+                    </div>
+                    <div class="screenshot-item"><img class="gallery-image" src="ss8.png"
+                            alt="8. Complex Scenario Query">
+                        <p>8. Complex Scenario Query</p>
+                    </div>
+                    <div class="screenshot-item"><img class="gallery-image" src="ss6.png"
+                            alt="9. Handling Follow-up Question">
+                        <p>9. Handling Follow-up Question</p>
+                    </div>
+                    <div class="screenshot-item"><img class="gallery-image" src="ss8.png"
+                            alt="10. Displaying Source Link">
+                        <p>10. Displaying Source Link</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="repository">
+                <h1>9. GitHub Repository &amp; README</h1>
+                <p>This document provides a high-level overview of the project. For complete technical details, source
+                    code, and the most up-to-date setup instructions, please visit the official project repository on
+                    GitHub.</p>
+                <div class="notice-box">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"
+                        stroke="currentColor" stroke-width="0.1">
+                        <path
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
+                    </svg>
+                    <p>You can access the full source code and the detailed <strong><a
+                                href="https://github.com/YugKp44/gst-tax-bot" target="_blank"
+                                rel="noopener noreferrer">README file on the official GitHub Repository</a></strong>.
+                    </p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div class="modal-caption" id="imageCaption"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const closeBtn = document.querySelector('.close-btn');
+            const sidebar = document.querySelector('.sidebar');
+            const navLinks = document.querySelectorAll('.sidebar-nav a');
+            const sections = document.querySelectorAll('.main-content section');
+
+            if (menuToggle) menuToggle.addEventListener('click', () => sidebar.classList.add('open'));
+            if (closeBtn) closeBtn.addEventListener('click', () => sidebar.classList.remove('open'));
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (window.innerWidth <= 1024) sidebar.classList.remove('open');
+                });
+            });
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, { rootMargin: "-30% 0px -70% 0px" });
+            sections.forEach(section => observer.observe(section));
+
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("modalImage");
+            const captionText = document.getElementById("imageCaption");
+            const galleryImages = document.querySelectorAll(".gallery-image");
+
+            galleryImages.forEach(img => {
+                img.onclick = function () {
+                    modal.style.display = "block";
+                    modalImg.src = this.src;
+                    captionText.innerHTML = this.alt;
+                }
+            });
+
+            const span = document.getElementsByClassName("modal-close")[0];
+            if (span) span.onclick = () => modal.style.display = "none";
+            window.onclick = event => {
+                if (event.target == modal) modal.style.display = "none";
+            }
+        });
+    </script>
+</body>
+
+</html>
